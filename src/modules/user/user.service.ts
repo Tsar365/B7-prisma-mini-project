@@ -60,6 +60,11 @@ const registerUserIntoDB = async (payload : RegisterUserPayload) =>{
 
 }
 
+const getMyProfileFromDB = async (userId: string) => {
+
+};
+
 export const userservice = {
     registerUserIntoDB,
+    getMyProfileFromDB,  
 };
