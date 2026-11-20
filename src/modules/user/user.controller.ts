@@ -44,8 +44,8 @@ const registerUser = catchAsync(
   },
 );
 
-const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-   
+const getMyProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     // const {accessToken}= req.cookies;
     // console.log(req.user,"User from request");
 
@@ -55,19 +55,38 @@ const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFu
     //   throw new Error(verifiedToken);
     // }
 
-const profile = await userservice.getMyProfileFromDB(req.user!.id as string);
+    const profile = await userservice.getMyProfileFromDB(
+      req.user!.id as string,
+    );
 
-// const profile = await userservice.getMyProfileFromDB(verifiedToken.userId);
+    // const profile = await userservice.getMyProfileFromDB(verifiedToken.userId);
 
     sendResponse(res, {
-        success: true,
-        statusCode: httpStatus.OK,
-        message: "Profile retrieved successfully",
-        data: { profile }
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Profile retrieved successfully",
+      data: { profile },
     });
-});
+  },
+);
+
+const updateMyProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user!.id as string;
+    const payload = req.body;
+    const updatedProfile = await userservice.updateMyProfile(userId, payload);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Profile updated successfully",
+      data: { updatedProfile },
+    });
+  },
+);
 
 export const userController = {
   registerUser,
   getMyProfile,
+  updateMyProfile,
 };
